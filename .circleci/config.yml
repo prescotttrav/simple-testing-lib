@@ -23,6 +23,7 @@ jobs:
     docker:
       - image: gcc:8.2
     steps:
+      - checkout
       - run:
           name: compile tests
           command: (cd ./test && make all)
