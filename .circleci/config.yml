@@ -21,12 +21,15 @@ jobs:
       - run:
           name: make test
           command: cd ./test && make all
+      - persist_to_workspace:
+          root: test
 
   test:
     docker:
       - image: gcc:8.2
     steps:
-      - checkout
+      - attach_workspace:
+          at: test
       - run:
           name: run tests
           command: ./test/test.exe
