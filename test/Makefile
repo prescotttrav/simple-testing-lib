@@ -7,4 +7,4 @@ DEPS = $(TEST:.c=.d)
 -include ${DEPS}
 
 all: ${OBJS}
-	${CC} ${CFLAGS} -o test ${OBJS} ../src/libtestfunctions.a
+	${CC} ${CFLAGS} -o test.exe ${OBJS} ../src/libtestfunctions.a
