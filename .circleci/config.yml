@@ -17,10 +17,10 @@ jobs:
       - checkout
       - run: 
           name: make lib
-          command: cd ./src && make lib && cd -
+          command: cd ./src && make lib
       - run:
           name: make test
-          command: cd ./test && make all & cd -
+          command: cd ./test && make all
 
   test:
     docker:
