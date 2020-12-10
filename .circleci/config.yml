@@ -1,0 +1,32 @@
+version: 2.1
+
+workflows:
+  version: 2.1
+  lib-compile:
+    jobs:
+      - compile
+      - test:
+          requires: 
+            - compile
+
+jobs:
+  compile:
+    docker:
+      - image: gcc:8.2
+    steps:
+      - checkout
+      - run: 
+          name: make lib
+          command: cd ./src && make lib
+
+  test:
+    docker:
+      - image: gcc:8.2
+    steps:
+      - run:
+          name: compile tests
+          command: cd ./test && make all
+      - run:
+          name: run tests
+          command: ./test/test.exe
+
