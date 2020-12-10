@@ -18,15 +18,15 @@ jobs:
       - run: 
           name: make lib
           command: cd ./src && make lib && cd -
+      - run:
+          name: make test
+          command: cd ./test && make all & cd -
 
   test:
     docker:
       - image: gcc:8.2
     steps:
       - checkout
-      - run:
-          name: compile tests
-          command: cd ./test && make all && cd -
       - run:
           name: run tests
           command: ./test/test.exe
