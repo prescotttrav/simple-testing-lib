@@ -17,7 +17,7 @@ jobs:
       - checkout
       - run: 
           name: make lib
-          command: cd ./src && make lib
+          command: (cd ./src && make lib)
 
   test:
     docker:
@@ -25,7 +25,7 @@ jobs:
     steps:
       - run:
           name: compile tests
-          command: cd ./test && make all
+          command: (cd ./test && make all)
       - run:
           name: run tests
           command: ./test/test.exe
