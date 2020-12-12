@@ -38,6 +38,8 @@ jobs:
       - run: mkdir src test
       - run: mv output/src src
       - run: mv output/test test
+      - run: ls -la src
+      - run: ls -la test
       - run: cd ./test && make all
       - persist_to_workspace:
           root: exe
