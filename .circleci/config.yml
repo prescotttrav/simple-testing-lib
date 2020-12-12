@@ -19,9 +19,10 @@ jobs:
     steps:
       - checkout
       - run: cd ./src && make lib
-      - run: mkdir output && mv src/libtestfunctions.a output
-      - run: mkdir output/test && mv test output/test
-      - run: ls -la
+      - run: mkdir output/src output/test
+      - run: mv src/libtestfunctions.a output/src
+      - run: mv test output/test
+      - run: ls -la output
       - persist_to_workspace:
           root: output
           paths:
@@ -33,8 +34,9 @@ jobs:
     steps:
       - attach_workspace:
           at: output
-      - run: ls -la
-      - run: mv output/* src
+      - run: mkdir src test
+      - run: mv output/src src
+      - run: mv output/test test
       - run: cd ./test && make all
       - persist_to_workspace:
           root: exe
