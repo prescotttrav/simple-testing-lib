@@ -34,10 +34,7 @@ jobs:
       - image: gcc:8.2
     steps:
       - attach_workspace:
-          at: output
-      - run: mkdir src test
-      - run: mv output/src src/*
-      - run: mv output/test test/*
+          at: .
       - run: ls -la src
       - run: ls -la test
       - run: cd ./test && make all
