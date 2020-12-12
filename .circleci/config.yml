@@ -20,6 +20,7 @@ jobs:
       - checkout
       - run: cd ./src && make lib
       - run: mkdir output && mv src/libtestfunctions.a output
+      - run: mkdir output/test && mv test output/test
       - run: ls -la
       - persist_to_workspace:
           root: output
