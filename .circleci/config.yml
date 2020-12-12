@@ -27,6 +27,7 @@ jobs:
           root: output
           paths:
             - src/*.a
+            - src/*.h
             - test/*
   
   compile_tests:
