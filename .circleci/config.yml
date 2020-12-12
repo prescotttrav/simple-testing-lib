@@ -2,35 +2,49 @@ version: 2.1
 
 workflows:
   version: 2.1
-  lib-compile:
+  compile_and_test:
     jobs:
-      - compile
-      - test:
-          requires: 
-            - compile
+      - compile_lib
+      - compile_tests:
+          requires:
+            - compile_lib
+      - run_tests:
+          requires:
+            - compile_tests
 
 jobs:
-  compile:
+  compile_lib:
     docker:
       - image: gcc:8.2
     steps:
       - checkout
-      - run: 
-          name: make lib
-          command: cd ./src && make lib
-      - run:
-          name: make test
-          command: cd ./test && make all
+      - run: cd ./src && make lib
+      - run: mkdir output && mv src/libtestfunctions.a output
+      - run: ls -la
       - persist_to_workspace:
-          root: test
-
-  test:
+          root: output
+          paths:
+            - "*.a"
+  
+  compile_tests:
     docker:
       - image: gcc:8.2
     steps:
       - attach_workspace:
-          at: test
-      - run:
-          name: run tests
-          command: ./test/test.exe
+          at: output
+      - run: ls -la
+      - run: mv output/* src
+      - run: cd ./test && make all
+      - persist_to_workspace:
+          root: exe
+          paths:
+            - "*.exe"
+
+  run_tests:
+    docker:
+      - image: gcc:8.2
+    steps:
+      - attach_workspace:
+          at: exe
+      - run: exe/test.exe
 
