@@ -1,0 +1,54 @@
+version: 2.1
+
+workflows:
+  version: 2.1
+  compile_and_test:
+    jobs:
+      - compile_lib
+      - compile_tests:
+          requires:
+            - compile_lib
+      - run_tests:
+          requires:
+            - compile_tests
+
+jobs:
+  compile_lib:
+    docker:
+      - image: gcc:8.2
+    steps:
+      - checkout
+      - run: cd ./src && make lib
+      - run: mkdir output output/src output/test
+      - run: mv src/*.a output/src
+      - run: mv src/*.h output/src
+      - run: mv test/* output/test
+      - persist_to_workspace:
+          root: output
+          paths:
+            - src/*.a
+            - src/*.h
+            - test/*
+  
+  compile_tests:
+    docker:
+      - image: gcc:8.2
+    steps:
+      - attach_workspace:
+          at: .
+      - run: ls -la src
+      - run: ls -la test
+      - run: cd ./test && make all
+      - persist_to_workspace:
+          root: test
+          paths:
+            - "*.exe"
+
+  run_tests:
+    docker:
+      - image: gcc:8.2
+    steps:
+      - attach_workspace:
+          at: .
+      - run: ./test.exe
+
